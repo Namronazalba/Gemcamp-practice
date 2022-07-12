@@ -41,6 +41,8 @@ services:
     command: ["redis-server", "--appendonly", "yes"]
     ports:
       - "6379:6379"
+      
+      
   webpacker:
     <<: *ror
     environment:
@@ -50,6 +52,8 @@ services:
     command: ./bin/webpack-dev-server
     ports:
       - 3035:3035
+      
+      
 #Volumes
 volumes:
   bundle-volume:
