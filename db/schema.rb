@@ -10,13 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_13_082532) do
+ActiveRecord::Schema.define(version: 2022_07_14_083946) do
 
   create_table "articles", force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "barangays", force: :cascade do |t|
+    t.string "code"
+    t.string "name"
+    t.integer "municipality_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["municipality_id"], name: "index_barangays_on_municipality_id"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -28,8 +37,21 @@ ActiveRecord::Schema.define(version: 2022_07_13_082532) do
   create_table "districts", force: :cascade do |t|
     t.string "code"
     t.string "name"
+    t.integer "region_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["region_id"], name: "index_districts_on_region_id"
+  end
+
+  create_table "municipalities", force: :cascade do |t|
+    t.string "code"
+    t.string "name"
+    t.integer "district_id"
+    t.integer "province_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["district_id"], name: "index_municipalities_on_district_id"
+    t.index ["province_id"], name: "index_municipalities_on_province_id"
   end
 
   create_table "post_categoryships", force: :cascade do |t|
@@ -92,7 +114,6 @@ ActiveRecord::Schema.define(version: 2022_07_13_082532) do
     t.string "last_sign_in_ip"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "avatar"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

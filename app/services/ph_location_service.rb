@@ -25,18 +25,31 @@ class PhLocationService
     response = RestClient.get("#{url}/districts")
     districts = JSON.parse(response.body)
     districts.each do |district|
-      province = Province.find_by_code(district['provinceCode'])
-      District.find_or_create_by(code: district['code'], name: district['name'], province: province)
+      region = Region.find_by_code(district['regionCode'])
+      District.find_or_create_by(code: district['code'], name: district['name'], region: region)
     end
   end
 
-  def get_minicipalities
-    response = RestClient.get("#{url}/municipalities")
-    municipalities = JSON.parse(response.body)
-    municipalities.each do |municipality|
-      district = Province.find_by_code(municipality['provinceCode'])
-      Municipality.find_or_create_by(code: municipality['code'], name: municipality['name'], district: district )
-    end
-  end
-  
+  def get_municipalities
+        response = RestClient.get("#{url}/municipalities")
+        municipalities = JSON.parse(response.body)
+        municipalities.each do |municipality|
+          if municipality['provinceCode']
+            province = Province.find_by_code(municipality['provinceCode'])
+            Municipality.find_or_create_by(code: municipality['code'], name: municipality['name'], province: province)
+          else
+            district = Province.find_by_code(municipality['districtCode'])
+            Municipality.find_or_create_by(code: municipality['code'], name: municipality['name'], district: district)
+          end
+        end
+      end
 end
+
+    def get_barangays
+      response = RestClient.get("#{url}/barangays")
+      barangays = JSON.parse(response.body)
+      barangays.each do |barangay|
+        municipality = Municipality.find_by_code(barangay['municipalityCode'])
+        Barangay.find_or_create_by(code: barangay['code'], name: barangay['name'], municipality: municipality)
+      end
+    end
