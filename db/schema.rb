@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 2022_07_14_083946) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["region_id"], name: "index_districts_on_region_id"
   end
-
+  
   create_table "municipalities", force: :cascade do |t|
     t.string "code"
     t.string "name"
