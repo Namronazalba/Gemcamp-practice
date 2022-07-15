@@ -4,5 +4,4 @@ class ProvinceSerializer < ActiveModel::Serializer
   def region
     RegionSerializer.new(object.region)
   end
-
 end
