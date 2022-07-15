@@ -8,7 +8,15 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :urls
-  resources :articles
+  resources :urls 
 
+  namespace :admin do
+    resources :posts do
+      post 'publish'
+    end
+  end
+
+  namespace :api do
+    resources :regions, only: :index
+  end
 end
